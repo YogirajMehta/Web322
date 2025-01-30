@@ -1,3 +1,15 @@
+/********************************************************************************
+* WEB322 – Assignment 02
+*
+* I declare that this assignment is my own work in accordance with Seneca's
+* Academic Integrity Policy:
+*
+* https://www.senecapolytechnic.ca/about/policies/academic-integrity-policy.html
+*
+* Name: Yogiraj Mehta Student ID:162867238  Date:30-01-2025
+*
+********************************************************************************/
+
 const express = require('express');
 const projectData = require("./modules/projects");
 const app = express();
