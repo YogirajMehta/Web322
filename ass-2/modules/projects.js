@@ -57,19 +57,3 @@ function getProjectsBySector(sector) {
 // Export functions to be used as a module
 module.exports = { initialize, getAllProjects, getProjectById, getProjectsBySector };
 
-// Testing the functions
-
-initialize()
-    .then(() => getAllProjects())
-    .then(projects => console.log("All Projects:", projects))
-    .catch(error => console.log("Error:", error));
-
-initialize()
-    .then(() => getProjectById(9))  // Example project ID
-    .then(project => console.log("Project by ID:", project))
-    .catch(error => console.log("Error:", error));
-
-initialize()
-    .then(() => getProjectsBySector("Electricity"))  // Example sector
-    .then(projects => console.log("Projects by Sector:", projects))
-    .catch(error => console.log("Error:", error));
