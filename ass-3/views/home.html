@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Solutions</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body> 
+   <!-- Navbar -->  
+    <nav class="navbar p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-white hover:text-blue-500 text-2xl font-bold">Climate Solutions</a>
+            <div class="space-x-4">
+                <a href="/about" class="text-white hover:text-blue-500">About</a>
+                <div class="dropdown">
+                    <button class="dropbtn text-white hover:text-blue-500">Sector</button>
+                    <div class="dropdown-content">
+                        <a href="/solutions/projects?sector=Industry" class="text-white hover:text-blue-500">Sector2</a>
+                        <a href="/solutions/projects?sector=Transportation" class="text-white hover:text-blue-500">Sector3</a>
+                        <a href="/solutions/projects?sector=Electricity" class="text-white hover:text-blue-500">Sector4</a>
+        </div>
+    </nav>
+<!-- Hero Section -->
+<div class="container mx-auto my-12 text-center">
+    <div class="hero bg-gray-800 text-white p-8 rounded">
+        <div class="max-w-md mx-auto"> 
+            <h1 class="text-4xl font-bold block">Welcome</h1>
+            <div class="my-4"></div>
+            <p class="mt-4 block">Browse our current collection of modern solutions to help fight Climate Change.</p>
+            <a href="/solutions/projects" class="btn btn-primary mt-6" style="margin-top: 24px !important;">Get Started Now</a>
+
+        </div>
+    </div>
+</div>  
+    <!-- Projects Grid -->
+    <div class="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <div class="card bg-gray-800 shadow-lg rounded-lg p-4">
+            <img src="https://drawdown.org/sites/default/files/solutions/solution_farmlandrestoration01.jpg" alt="Project 1" class="w-full h-48 object-cover rounded">
+            <h3 class="text-xl font-semibold mt-4">Abandoned Farmland Restoration</h3>
+            <p class=" mt-2">Restoration can bring degraded farmland back into productivity and sequester carbon in the process.</p>
+            <a href="/solutions/projects/1" class="btn btn-secondary mt-4">View Project</a>
+        </div>
+        <!-- Card 2 -->
+        <div class="card bg-gray-800 shadow-lg rounded-lg p-4">
+            <img src="https://drawdown.org/sites/default/files/solutions2020/solution_alternativecement02.jpg" alt="Project 2" class="w-full h-48 object-cover rounded">
+            <h3 class="text-xl font-semibold mt-4">Alternative Cement</h3>
+            <p class=" mt-2">Conventional cement production is a significant source of carbon dioxide. Reformulation can reduce emissions by millions of metric tons each year.</p>
+            <a href="/solutions/projects/2" class="btn btn-secondary mt-4">View Project</a>
+        </div>
+        <!-- Card 3 -->
+        <div class="card bg-gray-800 shadow-lg rounded-lg p-4">
+            <img src="https://drawdown.org/sites/default/files/solutions2020/solution_bicycle_infrastructure.jpg" alt="Project 3" class="w-full h-48 object-cover rounded">
+            <h3 class="text-xl font-semibold mt-4">Bicycle Infrastructure</h3>
+            <p class=" mt-2">Infrastructure is essential for supporting safe and abundant bicycle use, which curbs emissions by reducing the need for fossil-fuel-dependent transportation."</p>
+            <a href="/solutions/projects/3" class="btn btn-secondary mt-4">View Project</a>
+        </div>
+    </div>
+</body>
+</html>
