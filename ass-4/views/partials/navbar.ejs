@@ -1,0 +1,9 @@
+<nav class="navbar bg-gray-800 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-white hover:text-blue-500 text-2xl font-bold">Climate Solutions</a>
+        <div class="space-x-4">
+            <a class="text-white hover:text-blue-500 <%= (page == '/solutions/projects') ? 'active' : '' %>" href="/solutions/projects">View Projects</a>
+            <a class="text-white hover:text-blue-500 <%= (page == '/about') ? 'active' : '' %>" href="/about">About</a>
+        </div>
+    </div>
+</nav>

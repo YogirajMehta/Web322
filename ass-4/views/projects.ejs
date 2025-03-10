@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - Climate Solutions</title>
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+<body class="bg-base-100 text-base-content">
+  
+  <!--navbar-->
+  <%- include('partials/navbar', {page: '/solutions/projects'}) %>
+
+  <!--hero section-->
+  <div class="container mx-auto my-12 text-center">
+    <div class="hero bg-gray-800 text-white p-8 rounded">
+      <div class="max-w-md mx-auto">
+        <h1 class="text-4xl font-bold block">Projects</h1>
+        <div class="my-4"></div>
+        <p class="mt-4 block">Explore our climate solutions projects.</p>
+        <div class="flex gap-8 justify-center flex-wrap"> <!-- Adjusted gap for more spacing -->
+          <a href="/solutions/projects?sector=Land Sinks" class="btn btn-primary text-lg py-2 px-4 hover:bg-green-700 transition duration-300 mt-6">Land Sinks</a> <!-- Reduced padding here -->
+          <a href="/solutions/projects?sector=Industry" class="btn btn-primary text-lg py-2 px-4 hover:bg-blue-700 transition duration-300 mt-6">Industry</a> <!-- Reduced padding here -->
+          <a href="/solutions/projects?sector=Transportation" class="btn btn-primary text-lg py-2 px-4 hover:bg-orange-700 transition duration-300 mt-6">Transportation</a> <!-- Reduced padding here -->
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!--content of table-->
+  <div class="container mx-auto p-8">
+    <table class="table-auto w-full border-collapse">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="py-2 px-4 text-left">Title</th>
+          <th class="py-2 px-4 text-left">Sector</th>
+          <th class="py-2 px-4 text-left">Summary</th>
+          <th class="py-2 px-4 text-left">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% projects.forEach(project => { %>
+          <tr class="hover:bg-gray-100">
+            <td class="py-2 px-4"><%= project.title %></td>
+            <td class="py-2 px-4">
+              <a href="/solutions/projects?sector=<%= project.sector %>" class="btn btn-xs btn-primary mb-2">
+                <%= project.sector %>
+              </a>
+            </td>
+            <td class="py-2 px-4"><%= project.summary_short %></td>
+            <td class="py-2 px-4">
+              <a href="/solutions/projects/<%= project.id %>" class="btn btn-xs btn-secondary">
+                Details
+              </a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  
+</body>
+</html>
