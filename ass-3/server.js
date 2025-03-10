@@ -15,7 +15,7 @@ const path = require('path'); // Import path module to handle file paths
 const projectData = require("./modules/projects");
 const app = express();
 
-app.use(express.static(__dirname+'public')); // Serve static files from 'public' folder
+app.use(express.static(__dirname+'/public')); // Serve static files from 'public' folder
 
 projectData.initialize()
     .then(() => {
