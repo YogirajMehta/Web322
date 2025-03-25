@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Project</title> 
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <%- include('partials/navbar', { page: '/about' }) %>
+
+    <!-- Hero Section -->
+    <div class="container mx-auto my-12 text-center">
+        <div class="hero bg-gray-800 text-white p-8 rounded">
+            <div class="max-w-md mx-auto">
+                <h1 class="text-4xl font-bold block">Add Project</h1>
+                <div class="my-4"></div>
+                <p class="mt-4 block">Use the below form to add a new Project to the collection</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-6">
+        <form action="/solutions/addProject" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-md">
+            
+            <!-- Title and Feature Image -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <label for="title" class="block text-lg font-medium text-white">Title</label>
+                    <input type="text" id="title" name="title" class="w-full p-4 mt-1 border rounded-lg" required>
+                </div>
+                <div>
+                    <label for="feature_img_url" class="block text-lg font-medium text-white">Feature Image URL</label>
+                    <input type="url" id="feature_img_url" name="feature_img_url" class="w-full p-4 mt-1 border rounded-lg" required>
+                </div>
+            </div>
+    
+            <!-- Intro Short Section -->
+            <div class="mt-8">
+                <label for="intro_short" class="block text-lg font-medium text-white">Intro Short</label>
+                <textarea id="intro_short" name="intro_short" class="w-full p-4 mt-1 border rounded-lg" required></textarea>
+            </div>
+    
+            <!-- Summary Short Section -->
+            <div class="mt-8">
+                <label for="summary_short" class="block text-lg font-medium text-white">Summary Short</label>
+                <textarea id="summary_short" name="summary_short" class="w-full p-4 mt-1 border rounded-lg" required></textarea>
+            </div>
+    
+            <!-- Impact Section -->
+            <div class="mt-8">
+                <label for="impact" class="block text-lg font-medium text-white">Impact</label>
+                <textarea id="impact" name="impact" class="w-full p-4 mt-1 border rounded-lg" required></textarea>
+            </div>
+    
+            <!-- Original Source URL Section -->
+            <div class="mt-8">
+                <label for="original_source_url" class="block text-lg font-medium text-white">Original Source URL</label>
+                <input type="url" id="original_source_url" name="original_source_url" class="w-full p-4 mt-1 border rounded-lg" required>
+            </div>
+    
+            <!-- Sector Selection -->
+            <div class="mt-8">
+                <label for="sector_id" class="block text-lg font-medium text-white">Sector</label>
+                <select id="sector_id" name="sector_id" class="w-full p-4 mt-1 border rounded-lg" required>
+                    <% sectors.forEach(sector => { %>
+                        <option value="<%= sector.id %>"><%= sector.sector_name %></option>
+                    <% }) %>
+                </select>
+            </div>
+    
+            <!-- Submit Button -->
+            <button type="submit" class="w-full mt-6 bg-blue-500 text-white font-bold p-2 rounded hover:bg-blue-600">
+                Submit
+            </button>
+        </form>
+    </div>
+    
+
+  
+</body>
+</html>

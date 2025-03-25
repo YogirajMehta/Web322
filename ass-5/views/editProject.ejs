@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Project</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <%- include('partials/navbar', { page: '' }) %>
+
+    <!-- Hero Section -->
+    <div class="container mx-auto my-12 text-center">
+        <div class="hero bg-gray-800 text-white p-8 rounded">
+            <div class="max-w-md mx-auto">
+                <h1 class="text-4xl font-bold">Edit Project</h1>
+                <div class="my-4"></div>
+                <p class="mt-4"><%= project.title %></p>
+            </div>
+        </div>
+    </div>
+
+      <!-- Edit Project Form -->
+<div class="container mx-auto p-6">
+    <form action="/solutions/editProject" method="POST">
+        <input type="hidden" name="id" value="<%= project.id %>">
+
+        <!-- Grid for Title and Feature Image -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <label for="title" class="block text-lg font-medium">Project Title</label>
+                <input type="text" id="title" name="title" class="w-full p-4 mt-1 border rounded-lg" value="<%= project.title %>" required>
+            </div>
+
+            <div>
+                <label for="feature_img_url" class="block text-lg font-medium">Feature Image URL</label>
+                <input type="text" id="feature_img_url" name="feature_img_url" class="w-full p-4 mt-1 border rounded-lg" value="<%= project.feature_img_url %>" required>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="mt-8">
+            <label for="summary_short" class="block text-lg font-medium">Summary</label>
+            <textarea id="summary_short" name="summary_short" class="w-full p-4 mt-1 border rounded-lg" required><%= project.summary_short %></textarea>
+        </div>
+
+        <!-- Intro Section -->
+        <div class="mt-8">
+            <label for="intro_short" class="block text-lg font-medium">Intro</label>
+            <textarea id="intro_short" name="intro_short" class="w-full p-4 mt-1 border rounded-lg" ><%= project.intro_short %></textarea>
+        </div>
+
+        <!-- Impact Section -->
+        <div class="mt-8">
+            <label for="impact" class="block text-lg font-medium">Impact</label>
+            <textarea id="impact" name="impact" class="w-full p-4 mt-1 border rounded-lg" required><%= project.impact %></textarea>
+        </div>
+
+        <!-- Original Source URL -->
+        <div class="mt-8">
+            <label for="original_source_url" class="block text-lg font-medium">Original Source URL</label>
+            <input type="url" id="original_source_url" name="original_source_url" class="w-full p-4 mt-1 border rounded-lg" value="<%= project.original_source_url %>" required>
+        </div>
+
+        <!-- Sector Selection -->
+        <div class="mt-8">
+            <label for="sector_id" class="block text-lg font-medium">Sector</label>
+            <select id="sector_id" name="sector_id" class="w-full p-4 mt-1 border rounded-lg" required>
+                <% sectors.forEach(sector => { %>
+                    <option <%= project.sector_id == sector.id ? "selected" : "" %> value="<%= sector.id %>">
+                        <%= sector.sector_name %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+        <br>
+
+<div class="mt-8">
+    <!-- Update Project button -->
+    <button type="submit" class="btn btn-secondary">Update Project</button>
+</div>
+
+<!-- Delete Project link-->
+<div class="mt-4">
+    <a href="/solutions/deleteProject/<%= project.id %>" class="btn btn-secondary">Delete Project</a>
+</div>
+
+</body>
+</html>
