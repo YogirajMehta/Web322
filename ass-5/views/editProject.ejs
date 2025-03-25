@@ -30,19 +30,19 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
                 <label for="title" class="block text-lg font-medium">Project Title</label>
-                <input type="text" id="title" name="title" class="w-full p-4 mt-1 border rounded-lg" value="<%= project.title %>" required>
+                <input type="text" id="title" name="title" class="w-full p-4 mt-1 border rounded-lg" value="<%= project.title %>" >
             </div>
 
             <div>
                 <label for="feature_img_url" class="block text-lg font-medium">Feature Image URL</label>
-                <input type="text" id="feature_img_url" name="feature_img_url" class="w-full p-4 mt-1 border rounded-lg" value="<%= project.feature_img_url %>" required>
+                <input type="text" id="feature_img_url" name="feature_img_url" class="w-full p-4 mt-1 border rounded-lg" value="<%= project.feature_img_url %>" >
             </div>
         </div>
 
         <!-- Summary Section -->
         <div class="mt-8">
             <label for="summary_short" class="block text-lg font-medium">Summary</label>
-            <textarea id="summary_short" name="summary_short" class="w-full p-4 mt-1 border rounded-lg" required><%= project.summary_short %></textarea>
+            <textarea id="summary_short" name="summary_short" class="w-full p-4 mt-1 border rounded-lg" ><%= project.summary_short %></textarea>
         </div>
 
         <!-- Intro Section -->
@@ -54,19 +54,19 @@
         <!-- Impact Section -->
         <div class="mt-8">
             <label for="impact" class="block text-lg font-medium">Impact</label>
-            <textarea id="impact" name="impact" class="w-full p-4 mt-1 border rounded-lg" required><%= project.impact %></textarea>
+            <textarea id="impact" name="impact" class="w-full p-4 mt-1 border rounded-lg" ><%= project.impact %></textarea>
         </div>
 
         <!-- Original Source URL -->
         <div class="mt-8">
             <label for="original_source_url" class="block text-lg font-medium">Original Source URL</label>
-            <input type="url" id="original_source_url" name="original_source_url" class="w-full p-4 mt-1 border rounded-lg" value="<%= project.original_source_url %>" required>
+            <input type="url" id="original_source_url" name="original_source_url" class="w-full p-4 mt-1 border rounded-lg" value="<%= project.original_source_url %>">
         </div>
 
         <!-- Sector Selection -->
         <div class="mt-8">
             <label for="sector_id" class="block text-lg font-medium">Sector</label>
-            <select id="sector_id" name="sector_id" class="w-full p-4 mt-1 border rounded-lg" required>
+            <select id="sector_id" name="sector_id" class="w-full p-4 mt-1 border rounded-lg">
                 <% sectors.forEach(sector => { %>
                     <option <%= project.sector_id == sector.id ? "selected" : "" %> value="<%= sector.id %>">
                         <%= sector.sector_name %>
