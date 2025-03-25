@@ -123,8 +123,8 @@ app.get("/solutions/editProject/:id", (req, res) => {
 
 // POST "/solutions/editProject"
 app.post("/solutions/editProject", (req, res) => {
-    const { id, title, intro_short, sector_id } = req.body;
-    const projectDataToUpdate = { title, intro_short, sector_id };
+    const { id, title, feature_img_url, summary_short, intro_short, impact, original_source_url, sector_id } = req.body;
+    const projectDataToUpdate = { title, feature_img_url, summary_short, intro_short, impact, original_source_url, sector_id };
 
     projectData.editProject(parseInt(id), projectDataToUpdate)  // <-- Correct way of using editProject
         .then(() => {
