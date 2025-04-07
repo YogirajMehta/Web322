@@ -21,7 +21,7 @@ const HTTP_PORT = process.env.PORT || 3000;
 
 
 const app = express();
-module.exports = app;
+
 app.use(express.static(__dirname+'/public')); // Serve static files from 'public' folder
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs'); 
@@ -242,7 +242,7 @@ app.get("/userHistory", ensureLogin, (req, res) => {
         res.status(404).render("404", {message: "I'm sorry, we're unable to find what you're looking for.", page: "/404" });
     });
 
-
+module.exports = app;
     
    
 }
