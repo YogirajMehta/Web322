@@ -64,7 +64,7 @@ function ensureLogin(req, res, next) {
 }
 
 
-function startServer() {
+
     // GET "/"
     app.get('/', (req, res) => {
         res.render('home', { page: '/' }); 
@@ -244,5 +244,3 @@ app.get("/userHistory", ensureLogin, (req, res) => {
 
 module.exports = app;
     
-   
-}
