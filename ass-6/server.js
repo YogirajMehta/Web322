@@ -48,10 +48,10 @@ projectData.initialize()
 .then(function(){
 startServer();
 // Start the server
-app.listen(HTTP_PORT, function(){
-console.log(`app listening on: ${HTTP_PORT}`);
-});
-}).catch(function(err){
+module.exports = app;
+
+})
+.catch(function(err){
 console.log(`unable to start server: ${err}`);
 })
 
