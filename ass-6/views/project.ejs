@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project - Climate Solutions</title>
+  <link href="/css/main.css" rel="stylesheet">
+</head>
+<body class="bg-base-100 text-base-content">
+
+  <%- include('partials/navbar', {page: ''}) %>
+
+  <!-- Hero Section -->
+  <div class="container mx-auto my-12 text-center">
+    <div class="hero bg-gray-800 text-white p-8 rounded">
+      <div class="max-w-md mx-auto">
+        <h1 class="text-4xl font-bold block mb-4"><%= project.title %></h1>
+        <div class="my-4"></div>
+        <h6 class="mt-4 block text-lg">Below, you will find detailed information about the project: <%= project.title %></h6>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Project Details Section -->
+  <div class="container mx-auto p-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <!-- Project Image -->
+      <!-- Full-Width Project Image -->
+<div class="w-full">
+    <img src="<%= project.feature_img_url %>" 
+         alt="<%= project.title %>" 
+         class="w-full h-auto max-h-[500px] object-cover rounded-lg shadow-lg">
+  </div>
+  
+  
+      
+      <!-- Project Overview and Impact -->
+      <div class="space-y-4">
+        <p class="text-lg"><%= project.intro_short %></p>
+        <br>
+        <p class="text-2xl">Impact:</p>
+        <br>
+        <p class="text-lg"><%= project.impact %></p>
+        <br>
+        <p class="mt-4">
+            <span class="text-white">More Information:</span>
+            <a href="<%= project.original_source_url %>" target="_blank" style="text-decoration: underline;" class="hover:text-blue-500">
+              <%= project.original_source_url %>
+            </a>
+        </p>
+        
+        <!-- Dynamic Quote Section -->
+        <div id="quote-container" class="mt-6">
+          <!-- The quote will be inserted here -->
+        </div>
+        <br>
+        <% if (session.user) { %>
+        <a href="/solutions/editProject/<%= project.id %>" class="btn btn-secondary">Edit</a>
+        <% } %>
+        <br>
+        <a href="#" onclick="history.back(); return false;" class="btn btn-secondary">RETURN</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Fetch the quote data from the API
+      fetch("https://dummyjson.com/quotes/random")
+        .then(response => response.json())  // Convert the response to JSON
+        .then(data => {
+          // Get the quote and author
+          const quote = data.quote;
+          const author = data.author;
+          
+          // Insert the quote and author into the quote-container div
+          const quoteContainer = document.getElementById("quote-container");
+          quoteContainer.innerHTML = `
+            <p class="text-xl" style="font-style: italic;">
+          "${quote}"
+        </p>
+        <footer class="mt-2 text-sm opacity-75">
+          - ${author}
+        </footer>
+          `;
+        })
+        .catch(error => {
+          // Handle any errors that occur during the fetch operation
+          console.error("Error fetching quote:", error);
+        });
+    });
+  </script>
+
+</body>
+</html>

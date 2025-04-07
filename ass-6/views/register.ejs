@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body> 
+   <!-- Navbar -->  
+   <%- include('partials/navbar', { page: '/' }) %>
+<!-- Hero Section -->
+<div class="container mx-auto my-12 text-center">
+    <div class="hero bg-gray-800 text-white p-8 rounded">
+        <div class="max-w-md mx-auto"> 
+            <h1 class="text-4xl font-bold block">Register</h1>
+            <div class="my-4"></div>
+            <p class="mt-4 block">Please provide your credentials below</p>
+        </div>
+    </div>
+</div> 
+
+<% if (successMessage) { %>
+    <div class="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span><%= successMessage %></span>
+    </div>
+    
+    <a href="/login" class="btn btn-success w-full">Proceed to Log in</a>
+    
+  <% } else { %>
+    <!-- Registration Form -->
+    <div class="flex justify-center">
+      <form method="POST" action="/register" class="w-full max-w-md bg-gray-800 p-8 rounded-lg shadow-lg">
+        <div class="form-control mb-4">
+          <label for="userName" class="block text-black font-semibold mb-2">User Name</label>
+          <input type="text" id="userName" name="userName" placeholder="Enter your username" required class="input input-bordered w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value="<%= typeof userName !== 'undefined' ? userName : '' %>" />
+        </div>
+        
+        <div class="form-control mb-4">
+          <label for="password" class="block text-black font-semibold mb-2">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required class="input input-bordered w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+        
+        <div class="form-control mb-4">
+          <label for="password2" class="block text-black font-semibold mb-2">Confirm Password</label>
+          <input type="password" id="password2" name="password2" placeholder="Confirm your password" required class="input input-bordered w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+        
+        <div class="form-control mb-6">
+          <label for="email" class="block text-black font-semibold mb-2">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email address" required class="input input-bordered w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value="<%= typeof email !== 'undefined' ? email : '' %>" />
+        </div>
+        <br>
+        <div class="form-control">
+          <button type="submit" class="btn btn-primary w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
+  <% } %>
+
+  <% if (errorMessage) { %>
+    <div class="alert alert-error mt-6 text-center bg-red-100 text-red-700 p-4 rounded-lg shadow-md">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current h-6 w-6 inline-block" fill="none"
+        viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span class="ml-2 text-lg font-semibold"><%= errorMessage %></span>
+    </div>
+  <% } %>
+
+</body>
+</html>
