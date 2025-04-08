@@ -21,18 +21,19 @@ let User;
 function initialize() {
     return new Promise((resolve, reject) => {
         let db = mongoose.createConnection(process.env.MONGODB);
-db.on('error', (err) => {
-            console.error("MongoDB Connection Error: ", err);
-            reject(err); // Reject if there's an error with MongoDB connection
-        });
+
+        db.on('error', (err) => {
+            console.log("MongoDB connection error:", err); // Log any errors
+            reject(err);
         });
 
         db.once('open', () => {
-            User = db.model("users", userSchema); // Set up User model
-            resolve(); // Resolve when connection is established
+            console.log("MongoDB connected!"); // Log success
+            User = db.model("users", userSchema);
+            resolve();
         });
     });
-};
+}
 
 // Function to register a new user with password hashing
 function registerUser(userData) {
