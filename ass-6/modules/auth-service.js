@@ -20,21 +20,18 @@ let User;
 // Function to initialize database connection
 function initialize() {
     return new Promise((resolve, reject) => {
-        let db = mongoose.createConnection(process.env.MONGODB);
-
-        db.on('error', (err) => {
-            console.log("MongoDB connection error:", err); // This will log the error if connection fails
-            reject(err);
-        });
-
-        db.once('open', () => {
-            console.log("MongoDB connected!"); // Log successful connection
-            User = db.model("users", userSchema); // Initialize the User model
-            resolve();
-        });
+        mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
+            .then(() => {
+                console.log("MongoDB connected!");
+                User = mongoose.model("users", userSchema); // Set up User model
+                resolve();
+            })
+            .catch((err) => {
+                console.log("MongoDB connection error:", err); // Log if connection fails
+                reject(err); // Reject if there's an error with MongoDB connection
+            });
     });
 };
-
 
 // Function to register a new user with password hashing
 function registerUser(userData) {
@@ -75,14 +72,12 @@ function registerUser(userData) {
 function checkUser(userData) {
     return new Promise((resolve, reject) => {
         // Find user by userName
-        User.find({ userName: userData.userName })
-            .then(users => {
-                if (users.length === 0) {
+        User.findOne({ userName: userData.userName })  // Changed to findOne for better performance
+            .then(user => {
+                if (!user) {
                     reject(`Unable to find user: ${userData.userName}`);
                     return;
                 }
-
-                let user = users[0];
 
                 // Compare the hashed password with the entered password
                 bcrypt.compare(userData.password, user.password)
@@ -104,16 +99,13 @@ function checkUser(userData) {
                         });
 
                         // Update loginHistory in the database
-                        User.updateOne(
-                            { userName: user.userName },
-                            { $set: { loginHistory: user.loginHistory } }
-                        )
+                        user.save()  // Use save to update the document
                             .then(() => resolve(user))
                             .catch(err => reject(`There was an error verifying the user: ${err}`));
                     })
                     .catch(err => reject(`Error comparing passwords: ${err}`));
             })
-            .catch(() => reject(`Unable to find user: ${userData.userName}`));
+            .catch(err => reject(`Unable to find user: ${userData.userName}`));
     });
 }
 
