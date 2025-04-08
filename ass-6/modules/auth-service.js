@@ -23,17 +23,18 @@ function initialize() {
         let db = mongoose.createConnection(process.env.MONGODB);
 
         db.on('error', (err) => {
-            console.log("MongoDB connection error:", err); // Log any errors
+            console.log("MongoDB connection error:", err); // This will log the error if connection fails
             reject(err);
         });
 
         db.once('open', () => {
-            console.log("MongoDB connected!"); // Log success
-            User = db.model("users", userSchema);
+            console.log("MongoDB connected!"); // Log successful connection
+            User = db.model("users", userSchema); // Initialize the User model
             resolve();
         });
     });
-}
+};
+
 
 // Function to register a new user with password hashing
 function registerUser(userData) {
