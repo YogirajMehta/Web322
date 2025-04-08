@@ -21,9 +21,10 @@ let User;
 function initialize() {
     return new Promise((resolve, reject) => {
         let db = mongoose.createConnection(process.env.MONGODB);
-
-        db.on('error', (err) => {
+db.on('error', (err) => {
+            console.error("MongoDB Connection Error: ", err);
             reject(err); // Reject if there's an error with MongoDB connection
+        });
         });
 
         db.once('open', () => {
