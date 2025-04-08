@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
+require('dotenv').config(); // Make sure dotenv is working
+const Schema = mongoose.Schema;
 
-// Define user schema
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     userName: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     email: { type: String, required: true },
@@ -14,66 +15,104 @@ const userSchema = new mongoose.Schema({
     ]
 });
 
-const User = mongoose.model('User', userSchema);
+let User;
 
-// Function to initialize the user model
+// Function to initialize database connection
 function initialize() {
     return new Promise((resolve, reject) => {
-        if (mongoose.connection.readyState === 0) {
-            reject("Database not connected!");
-        } else {
-            resolve();
-        }
-    });
-}
+        let db = mongoose.createConnection(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Function to register a user
+        db.on('error', (err) => {
+            reject(err); // Reject if there's an error with MongoDB connection
+        });
+
+        db.once('open', () => {
+            User = db.model("users", userSchema); // Set up User model
+            resolve(); // Resolve when connection is established
+        });
+    });
+};
+
+// Function to register a new user with password hashing
 function registerUser(userData) {
     return new Promise((resolve, reject) => {
+        // Check if passwords match
         if (userData.password !== userData.password2) {
             reject("Passwords do not match");
             return;
         }
 
+        // Hash the password
         bcrypt.hash(userData.password, 10)
             .then(hash => {
+                // Create a new User instance with hashed password
                 let newUser = new User({
                     userName: userData.userName,
                     userAgent: userData.userAgent,
                     email: userData.email,
-                    password: hash
+                    password: hash // Store the hashed password
                 });
-                return newUser.save();
+
+                // Save the user to the database
+                newUser.save()
+                    .then(() => resolve()) // Successfully created user
+                    .catch((err) => {
+                        if (err.code === 11000) {
+                            reject("User Name already taken"); // Duplicate username
+                        } else {
+                            reject(`There was an error creating the user: ${err}`);
+                        }
+                    });
             })
-            .then(() => resolve())
-            .catch(err => reject("Error creating user: " + err));
+            .catch(err => reject(`There was an error encrypting the password: ${err}`));
     });
 }
 
-// Function to check if the user exists and authenticate
+// Function to check user credentials with password comparison
 function checkUser(userData) {
     return new Promise((resolve, reject) => {
-        User.findOne({ userName: userData.userName })
-            .then(user => {
-                if (!user) {
-                    reject("User not found");
+        // Find user by userName
+        User.find({ userName: userData.userName })
+            .then(users => {
+                if (users.length === 0) {
+                    reject(`Unable to find user: ${userData.userName}`);
                     return;
                 }
 
+                let user = users[0];
+
+                // Compare the hashed password with the entered password
                 bcrypt.compare(userData.password, user.password)
-                    .then(isMatch => {
-                        if (isMatch) {
-                            user.loginHistory.push({ userAgent: userData.userAgent });
-                            user.save();
-                            resolve(user);
-                        } else {
-                            reject("Incorrect password");
+                    .then(result => {
+                        if (!result) {
+                            reject(`Incorrect Password for user: ${userData.userName}`);
+                            return;
                         }
+
+                        // Limit loginHistory to 8 entries
+                        if (user.loginHistory.length === 8) {
+                            user.loginHistory.pop();
+                        }
+
+                        // Add new login entry
+                        user.loginHistory.unshift({
+                            dateTime: new Date().toString(),
+                            userAgent: userData.userAgent
+                        });
+
+                        // Update loginHistory in the database
+                        User.updateOne(
+                            { userName: user.userName },
+                            { $set: { loginHistory: user.loginHistory } }
+                        )
+                            .then(() => resolve(user))
+                            .catch(err => reject(`There was an error verifying the user: ${err}`));
                     })
-                    .catch(err => reject("Error comparing passwords: " + err));
+                    .catch(err => reject(`Error comparing passwords: ${err}`));
             })
-            .catch(err => reject("Error finding user: " + err));
+            .catch(() => reject(`Unable to find user: ${userData.userName}`));
     });
 }
 
+// Export all functions
 module.exports = { initialize, registerUser, checkUser };
