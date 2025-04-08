@@ -46,9 +46,9 @@ app.use((req, res, next) => {
 projectData.initialize()
 .then(authData.initialize)
 .then(function(){
-startServer();
+//startServer();
 // Start the server
-module.exports = app;
+//module.exports = app;
 
 })
 .catch(function(err){
@@ -241,6 +241,5 @@ app.get("/userHistory", ensureLogin, (req, res) => {
     app.use((req, res) => {
         res.status(404).render("404", {message: "I'm sorry, we're unable to find what you're looking for.", page: "/404" });
     });
-
 module.exports = app;
     
