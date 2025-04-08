@@ -49,9 +49,9 @@ projectData.initialize()
 //startServer();
 // Start the server
 //module.exports = app;
-app.listen(HTTP_PORT, () => {
-    console.log(`Server running on port ${HTTP_PORT}`);
-});
+//app.listen(HTTP_PORT, () => {
+ //   console.log(`Server running on port ${HTTP_PORT}`);
+// });
 })
 .catch(function(err){
 console.log(`unable to start server: ${err}`);
