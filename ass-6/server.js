@@ -13,19 +13,35 @@
 const express = require('express');
 const path = require('path'); // Import path module to handle file paths
 const projectData = require("./modules/projects");
-
 const authData = require('./modules/auth-service');
-
 const clientSessions = require("client-sessions");
+const Sequelize = require('sequelize');
 const HTTP_PORT = process.env.PORT || 3000;
 
 const app = express();
 
-app.use(express.static(__dirname + '/public')); // Serve static files from 'public' folder
+// Serve static files from 'public' folder
+app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs'); 
+app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));
+
+// Database setup using Sequelize
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres', // or 'mysql', 'sqlite', 'mssql' depending on the DB you're using
+    logging: console.log, // Enable logging to see the queries being executed
+});
+
+// Test the database connection
+sequelize.authenticate()
+    .then(() => {
+        console.log('Database connected successfully!');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+        throw new Error('Unable to start server: Database not connected!');
+    });
 
 // Import getAllSectors and addProject from projects.js
 const { getAllSectors, addProject } = require("./modules/projects");
@@ -44,14 +60,14 @@ app.use((req, res, next) => {
 
 projectData.initialize()
 .then(authData.initialize)
-.then(function() {
+.then(function(){
     // Start the server
     app.listen(HTTP_PORT, () => {
         console.log(`Server running on port ${HTTP_PORT}`);
     });
 })
-.catch(function(err) {
-    console.log(`Unable to start server: ${err}`);
+.catch(function(err){
+    console.log(`unable to start server: ${err}`);
 });
 
 function ensureLogin(req, res, next) {
@@ -64,12 +80,12 @@ function ensureLogin(req, res, next) {
 
 // GET "/"
 app.get('/', (req, res) => {
-    res.render('home', { page: '/' }); 
+    res.render('home', { page: '/' });
 });
 
 // GET "/about"
 app.get('/about', (req, res) => {
-    res.render('about', { page: '/about' }); 
+    res.render('about', { page: '/about' });
 });
 
 // GET "/solutions/projects"
@@ -79,46 +95,39 @@ app.get('/solutions/projects', (req, res) => {
     if (sector) {
         projectData.getProjectsBySector(sector)
             .then(projects => {
-                res.render('projects', { projects: projects }); // Render the projects
+                res.render('projects', { projects: projects });
             })
             .catch(error => {
-                res.status(404).render('404', { message: `No projects found for sector: ${sector}` });
+                res.status(404).render('404', { message:`No projects found for sector: ${sector}`});
             });
     } else {
         projectData.getAllProjects()
-            .then(projects => {
-                if (projects.length === 0) {
-                    return res.status(404).render('404', { message: "No projects available at the moment." });
-                }
-                res.render('projects', { projects: projects }); // Render all projects
-            })
-            .catch(err => {
-                res.status(500).render('500', { message: `Error fetching projects: ${err.message}` });
-            });
+        .then(projects => {
+            if (projects.length === 0) {
+                return res.status(404).render('404', { message: "No projects available at the moment." });
+            }
+            res.render('projects', { projects: projects });
+        });
     }
 });
 
 // GET "/solutions/projects/:id"
 app.get('/solutions/projects/:id', (req, res) => {
-    const projectId = parseInt(req.params.id); // Get the project ID from the URL
-
-    if (isNaN(projectId)) {
-        return res.status(404).render('404', { message: 'Invalid project ID' });
-    }
+    const projectId = parseInt(req.params.id);
 
     projectData.getProjectById(projectId)
         .then(project => {
-            res.render('project', { project: project }); // Render the project details
+            res.render('project', { project: project });
         })
         .catch(error => {
-            res.status(404).render('404', { message: `Project with ID ${projectId} not found.` });
+            res.status(404).render('404', { message:`Project with ID ${projectId} not found.`});
         });
 });
 
 // GET "/solutions/addProject" - Render the form
 app.get("/solutions/addProject", ensureLogin, async (req, res) => {
     try {
-        const sectorData = await getAllSectors(); // Fetch all sectors
+        const sectorData = await getAllSectors();
         res.render("addProject", { sectors: sectorData });
     } catch (err) {
         console.error("Error fetching sectors:", err);
@@ -129,8 +138,8 @@ app.get("/solutions/addProject", ensureLogin, async (req, res) => {
 // POST "/solutions/addProject" - Handle form submission
 app.post("/solutions/addProject", ensureLogin, async (req, res) => {
     try {
-        await addProject(req.body); // Add project using form data
-        res.redirect("/solutions/projects"); // Redirect to project list
+        await addProject(req.body);
+        res.redirect("/solutions/projects");
     } catch (err) {
         res.render("500", { message: `Error adding project: ${err.message}` });
     }
@@ -173,10 +182,10 @@ app.get('/solutions/deleteProject/:id', ensureLogin, (req, res) => {
 
     projectData.deleteProject(projectId)
         .then(() => {
-            res.redirect('/solutions/projects'); // Redirect to the projects page after deletion
+            res.redirect('/solutions/projects');
         })
         .catch((err) => {
-            res.render('500', { message: `Error deleting project: ${err}` }); // Error handling
+            res.render('500', { message: `I'm sorry, but we have encountered the following error: ${err}` });
         });
 });
 
@@ -207,7 +216,7 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-    req.body.userAgent = req.get("User-Agent"); // Store user agent
+    req.body.userAgent = req.get("User-Agent");
 
     authData.checkUser(req.body)
         .then((user) => {
@@ -216,7 +225,7 @@ app.post("/login", (req, res) => {
                 email: user.email,
                 loginHistory: user.loginHistory
             };
-            res.redirect("/solutions/projects"); // Redirect to dashboard
+            res.redirect("/solutions/projects");
         })
         .catch((err) => {
             res.render("login", {
@@ -237,7 +246,7 @@ app.get("/userHistory", ensureLogin, (req, res) => {
 
 // Custom 404 error route
 app.use((req, res) => {
-    res.status(404).render("404", { message: "I'm sorry, we're unable to find what you're looking for.", page: "/404" });
+    res.status(404).render("404", {message: "I'm sorry, we're unable to find what you're looking for.", page: "/404" });
 });
 
 module.exports = app;
