@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-require('dotenv').config();
+require('dotenv').config(); // Make sure dotenv is working
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -20,7 +20,7 @@ let User;
 // Function to initialize database connection
 function initialize() {
     return new Promise((resolve, reject) => {
-        let db = mongoose.createConnection(process.env.MONGODB);
+        let db = mongoose.createConnection(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true });
 
         db.on('error', (err) => {
             console.error("MongoDB Connection Error: ", err);

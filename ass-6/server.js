@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path'); // Import path module to handle file paths
+const path = require('path'); 
 const projectData = require("./modules/projects");
 const authData = require('./modules/auth-service');
 const clientSessions = require("client-sessions");
@@ -7,20 +7,28 @@ const HTTP_PORT = process.env.PORT || 3000;
 
 const app = express();
 
+<<<<<<< HEAD
 app.use(express.static(__dirname + '/public')); // Serve static files from 'public' folder
 app.set('views', __dirname + '/views');
+=======
+app.use(express.static(__dirname+'/public')); 
+app.set('views', path.join(__dirname, 'views')); 
+>>>>>>> 0c971370375c363f4b731afa6314a76e2264fd24
 app.set('view engine', 'ejs'); 
 
 app.use(express.urlencoded({ extended: true }));
 
+<<<<<<< HEAD
 // Import getAllSectors and addProject from projects.js
+=======
+>>>>>>> 0c971370375c363f4b731afa6314a76e2264fd24
 const { getAllSectors, addProject } = require("./modules/projects");
 
 app.use(clientSessions({
-    cookieName: "session", // The name of the session object
-    secret: "mySuperSecretKey123", // Secret key to encrypt session data
-    duration: 24 * 60 * 60 * 1000, // 24 hours (how long session lasts)
-    activeDuration: 1000 * 60 * 5 // Extend session by 5 minutes on activity
+    cookieName: "session",
+    secret: process.env.SESSION_SECRET || "defaultSecretKey", // Vercel should use env var for secret
+    duration: 24 * 60 * 60 * 1000,
+    activeDuration: 1000 * 60 * 5
 }));
 
 app.use((req, res, next) => {
@@ -30,6 +38,7 @@ app.use((req, res, next) => {
 
 projectData.initialize()
     .then(authData.initialize)
+<<<<<<< HEAD
     .then(function() {
         startServer();
         // Start the server
@@ -37,16 +46,26 @@ projectData.initialize()
     })
     .catch(function(err) {
         console.log(`unable to start server: ${err}`);
+=======
+    .then(() => {
+        app.listen(HTTP_PORT, () => {
+            console.log(`Server running on port ${HTTP_PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.log(`Unable to start server: ${err}`);
+>>>>>>> 0c971370375c363f4b731afa6314a76e2264fd24
     });
 
 function ensureLogin(req, res, next) {
     if (!req.session.user) {
-        res.redirect("/login"); // Redirect to login if user is not logged in
+        res.redirect("/login");
     } else {
-        next(); // Continue to the requested route
+        next();
     }
 }
 
+<<<<<<< HEAD
 function startServer() {
     // GET "/"
     app.get('/', (req, res) => {
@@ -231,3 +250,22 @@ app.listen(HTTP_PORT, () => {
     console.log(`Server started at http://localhost:${HTTP_PORT}`);
   });
 }
+=======
+app.get('/', (req, res) => {
+    res.render('home', { page: '/' }); 
+});
+
+app.get('/about', (req, res) => {
+    res.render('about', { page: '/about' }); 
+});
+
+// Add routes as in your provided server.js...
+
+// Your routes remain the same, ensure they are in place ("/", "/solutions/projects", etc.)
+
+// Custom 404 error route
+app.use((req, res) => {
+    res.status(404).render("404", { message: "Page not found." });
+});
+module.exports = app;
+>>>>>>> 0c971370375c363f4b731afa6314a76e2264fd24
